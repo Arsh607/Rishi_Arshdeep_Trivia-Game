@@ -160,3 +160,59 @@ function newPlayer() {
     document.getElementById("welcome-message").innerHTML = "Welcome, new player!";
     alert("Starting a new game...");
 }
+
+
+// Function to set a session cookie
+function setSessionCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+// Function to get a session cookie
+function getSessionCookie(name) {
+    let nameEq = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEq) === 0) {
+            return c.substring(nameEq.length, c.length);
+        }
+    }
+    return null;
+}
+
+// Function to delete a session cookie
+function deleteSessionCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+}
+
+// Initialize the session
+function initializeSession() {
+    let username = document.getElementById("username").value;
+    if (username) {
+        setSessionCookie("username", username, 7);
+        document.getElementById("welcome-message").innerHTML = `Welcome, ${username}!`;
+        document.getElementById("username").value = "";
+    } else {
+        alert("Please enter a username.");
+    }
+}
+
+// End the session and log out
+function endSession() {
+    deleteSessionCookie("username");
+    document.getElementById("username").value = "";
+    document.getElementById("welcome-message").innerHTML = "You have logged out.";
+}
+
+// Check session on page load
+window.onload = function() {
+    let username = getSessionCookie("username");
+    if (username) {
+        document.getElementById("welcome-message").innerHTML = `Welcome back, ${username}!`;
+    } else {
+        document.getElementById("welcome-message").innerHTML = "Please enter your username to start.";
+    }
+};

@@ -122,3 +122,23 @@ button {
 	padding: 0.75rem;
 	text-align: left;
 }
+
+#container {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+#welcome-message {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+input[type="text"] {
+    padding: 8px;
+    width: 80%;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}

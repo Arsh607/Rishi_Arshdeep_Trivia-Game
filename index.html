@@ -8,6 +8,12 @@
 	<body>
 		<div id="game-container">
 			<form id="trivia-form">
+                <div id="container">
+                    <div id="welcome-message"></div>
+                    <input type="text" id="username" placeholder="Enter your username" />
+                    <button onclick="initializeSession()">Start Session</button>
+                    <button onclick="endSession()">Log Out</button>
+                </div>
 				<!-- Loading State / Skeleton Loader -->
 				<div id="loading-container" class="hidden">
 					<div class="skeleton skeleton-option"></div>
