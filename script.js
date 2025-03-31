@@ -105,3 +105,58 @@ document.addEventListener("DOMContentLoaded", function () {
 		//... form submission logic including setting cookies and calculating score
 	}
 });
+
+function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+    let nameEq = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEq) === 0) {
+            return c.substring(nameEq.length, c.length);
+        }
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+}
+
+// Check for saved username when page loads
+window.onload = function() {
+    let username = getCookie("username");
+    if (username) {
+        document.getElementById("username").value = username;
+        document.getElementById("welcome-message").innerHTML = `Welcome back, ${username}!`;
+    } else {
+        document.getElementById("username").placeholder = "Enter your username";
+    }
+};
+
+// Handle form submission and save the username in a cookie
+function handleFormSubmit(event) {
+    event.preventDefault();
+    let username = document.getElementById("username").value;
+    if (username) {
+        setCookie("username", username, 7);
+        alert("Username saved successfully!");
+        document.getElementById("welcome-message").innerHTML = `Welcome, ${username}!`;
+    } else {
+        alert("Please enter a username.");
+    }
+}
+
+// Handle new player scenario (clear cookie and reset the form)
+function newPlayer() {
+    deleteCookie("username");
+    document.getElementById("username").value = "";
+    document.getElementById("welcome-message").innerHTML = "Welcome, new player!";
+    alert("Starting a new game...");
+}
