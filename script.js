@@ -216,3 +216,65 @@ window.onload = function() {
         document.getElementById("welcome-message").innerHTML = "Please enter your username to start.";
     }
 };
+
+
+// Function to set a session cookie
+function setSessionCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));  // Set expiration
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";  // Set cookie
+}
+
+// Function to get the value of a session cookie
+function getSessionCookie(name) {
+    let nameEq = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEq) === 0) {
+            return c.substring(nameEq.length, c.length);  // Return cookie value
+        }
+    }
+    return null;  // Return null if cookie is not found
+}
+
+// Handle form submission
+function handleFormSubmit(event) {
+    event.preventDefault();  // Prevent form from reloading the page
+    
+    // Get values from form fields
+    let username = document.getElementById("username").value;
+    let email = document.getElementById("email").value;
+
+    // Basic form validation
+    if (!username || !email) {
+        alert("Please fill out all fields.");
+        return;
+    }
+
+    // Store username and email in cookies for session management
+    setSessionCookie("username", username, 7);  // Session expires in 7 days
+    setSessionCookie("email", email, 7);  // Session expires in 7 days
+
+    // Show success message
+    document.getElementById("message").innerText = `Welcome, ${username}! Your session is set.`;
+    
+    // Optionally, clear form fields after submission
+    document.getElementById("user-form").reset();
+}
+
+// Check for an existing session on page load
+window.onload = function() {
+    let username = getSessionCookie("username");
+    let email = getSessionCookie("email");
+
+    if (username && email) {
+        document.getElementById("message").innerText = `Welcome back, ${username}! Your email is ${email}.`;
+    } else {
+        document.getElementById("message").innerText = "Please fill out the form to begin.";
+    }
+};
+
+// Add event listener to form submission
+document.getElementById("user-form").addEventListener("submit", handleFormSubmit);
