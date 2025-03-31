@@ -336,8 +336,6 @@ function storeScoreInLocalStorage(score) {
 function displayScores() {
     const scoreTable = document.getElementById("score-table").getElementsByTagName('tbody')[0];
     const playerScores = JSON.parse(localStorage.getItem("playerScores")) || [];
-
-    // Clear existing table rows
     scoreTable.innerHTML = '';
 
     // Display the stored scores in the table
