@@ -295,7 +295,7 @@ function calculateScore(questions) {
 function handleFormSubmit(event) {
     event.preventDefault();
     
-    const questions = getFetchedQuestions(); 
+    const questions = getFetchedQuestions();  
     const score = calculateScore(questions);
 
     storeScoreInLocalStorage(score);
