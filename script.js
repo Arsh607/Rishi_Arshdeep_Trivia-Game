@@ -350,3 +350,36 @@ function displayScores() {
 document.addEventListener("DOMContentLoaded", function () {
     displayScores();
 });
+
+const finishGameButton = document.getElementById("finish-game");
+
+// Add event listener for the "Finish Game" button
+finishGameButton.addEventListener("click", finishGame);
+
+function finishGame() {
+    // Logic for finishing the game
+    const score = calculateScore(getFetchedQuestions());
+    storeScoreInLocalStorage(score); // Save score to local storage
+
+    // Display score
+    displayScore(score);
+
+    // Hide the trivia game form
+    document.getElementById("trivia-form").classList.add("hidden");
+
+    // Show the "New Player" button and the score table
+    document.getElementById("new-player").classList.remove("hidden");
+    displayScores();  // Display updated scores
+}
+
+// Show the finish button after all questions are answered
+function showFinishButton() {
+    document.getElementById("finish-game").classList.remove("hidden");
+}
+
+console.log("Adding event listener to finish game button...");
+finishGameButton.addEventListener("click", function() {
+    console.log("Finish Game button clicked");
+    finishGame(); // Call the finish game function
+});
+
