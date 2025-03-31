@@ -357,11 +357,10 @@ const finishGameButton = document.getElementById("finish-game");
 finishGameButton.addEventListener("click", finishGame);
 
 function finishGame() {
-    // Logic for finishing the game
+
     const score = calculateScore(getFetchedQuestions());
     storeScoreInLocalStorage(score); // Save score to local storage
 
-    // Display score
     displayScore(score);
 
     // Hide the trivia game form
