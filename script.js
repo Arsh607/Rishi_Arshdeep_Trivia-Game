@@ -278,3 +278,75 @@ window.onload = function() {
 
 // Add event listener to form submission
 document.getElementById("user-form").addEventListener("submit", handleFormSubmit);
+
+function calculateScore(questions) {
+    let score = 0;
+
+    questions.forEach((question, index) => {
+        const selectedAnswer = document.querySelector(`input[name="answer${index}"]:checked`);
+        if (selectedAnswer && selectedAnswer.getAttribute("data-correct") === "true") {
+            score++;
+        }
+    });
+
+    return score;
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    const questions = getFetchedQuestions(); 
+    const score = calculateScore(questions);
+
+    storeScoreInLocalStorage(score);
+    displayScore(score);
+}
+
+function storeScoreInLocalStorage(score) {
+    let playerScores = JSON.parse(localStorage.getItem("playerScores")) || [];
+    playerScores.push({ username: getSessionCookie("username"), score });
+    localStorage.setItem("playerScores", JSON.stringify(playerScores));
+}
+
+function displayScore(score) {
+    const scoreContainer = document.getElementById("score-container");
+    scoreContainer.innerHTML = `<p>Your score is: ${score}</p>`;
+    
+    const newPlayerButton = document.getElementById("new-player");
+    newPlayerButton.classList.remove("hidden");
+}
+
+document.getElementById("trivia-form").addEventListener("submit", handleFormSubmit);
+
+function storeScoreInLocalStorage(score) {
+    const username = getSessionCookie("username");
+    let playerScores = JSON.parse(localStorage.getItem("playerScores")) || [];
+
+    // Check if the player already has a score entry, then update or add new entry
+    const existingPlayer = playerScores.find(player => player.username === username);
+    if (existingPlayer) {
+        existingPlayer.score = score;
+    } else {
+        playerScores.push({ username, score });
+    }
+
+    localStorage.setItem("playerScores", JSON.stringify(playerScores));
+}
+
+function displayScores() {
+    const scoreTable = document.getElementById("score-table").getElementsByTagName('tbody')[0];
+    const playerScores = JSON.parse(localStorage.getItem("playerScores")) || [];
+
+    // Clear existing table rows
+    scoreTable.innerHTML = '';
+
+    // Display the stored scores in the table
+    playerScores.forEach(player => {
+        const row = scoreTable.insertRow();
+        row.innerHTML = `<td>${player.username}</td><td>${player.score}</td>`;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    displayScores();
+});
